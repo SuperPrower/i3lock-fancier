@@ -1020,7 +1020,7 @@ int main(int argc, char *argv[]) {
 	xcb_change_window_attributes(conn, screen->root, XCB_CW_EVENT_MASK,
 			(uint32_t[]){XCB_EVENT_MASK_STRUCTURE_NOTIFY});
 
-	if (!(image_path[0] == '\0')) {
+	if (strlen(image_path) != 0) {
 		/* Create a pixmap to render on, fill it with the background color */
 		img = cairo_image_surface_create_from_png(image_path);
 		/* In case loading failed, we just pretend no -i was specified. */
@@ -1096,4 +1096,7 @@ int main(int argc, char *argv[]) {
 		start_time_redraw_tick(main_loop);
 	}
 	ev_loop(main_loop, 0);
+
+	// Release .ini file
+	free_config();
 }

@@ -12,7 +12,7 @@ ifeq ($(shell which $(PKG_CONFIG) 2>/dev/null 1>/dev/null || echo 1),1)
 $(error "$(PKG_CONFIG) was not found")
 endif
 
-CFLAGS += -std=c99
+CFLAGS += -std=c99 -g
 CFLAGS += -pipe
 CFLAGS += -Wall
 CFLAGS += -O2

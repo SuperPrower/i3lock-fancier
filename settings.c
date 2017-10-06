@@ -51,8 +51,8 @@ double refresh_rate 		= 1.0;
 int unlock_indicator 		= 1;
 int always_show_indicator 	= 0;
 
-int SHOW_CAPS_LOCK_STATE 	= 1;
-int SHOW_KEYBOARD_LAYOUT 	= 1;;
+int show_caps_lock_state 	= 1;
+int show_keyboard_layout 	= 1;
 
 int tile 			= 0;
 
@@ -67,6 +67,7 @@ char time_format[32] 		= "%H:%M:%S\0";
 char date_format[32] 		= "%A, %m %Y\0";
 char time_font[32] 		= "sans-serif\0";
 char date_font[32] 		= "sans-serif\0";
+char keyl_font[32]		= "sans-serif\0";
 char unlock_x_expr[32] 		= "x + (w / 2)\0";
 char unlock_y_expr[32] 		= "y + (h / 2)\0";
 char time_x_expr[32] 		= "ix - (cw / 2)\0";
@@ -83,20 +84,22 @@ double indicators_size 		= 28.0;
 double modifier_size 		= 14.0;
 double circle_radius 		= 90.0;
 
-char * image_path 		= "";
+char * image_path		= NULL;
 
-char * verif_text 		= "Verifying...";
-char * wrong_text 		= "Wrong Password!";
+char * verif_text		= "Verifying...";
+char * wrong_text		= "Wrong Password!";
+
+static ini_t * config;
 
 /** Configuration file functions prototypes **/
 int read_config(char * file)
 {
-	if (!file && file[0] == '\0') {
+	if (!file || file[0] == '\0') {
 		errx(EXIT_FAILURE, "Invalid configuration file path\n");
 	}
 
 	/** open config file **/
-	ini_t * config = ini_load(file);
+	config = ini_load(file);
 	if (!config) {
 		errx(EXIT_FAILURE, "Unable to load configuration file\n");
 	}
@@ -104,21 +107,28 @@ int read_config(char * file)
 	/** parse config file **/
 	/* temporary variables for checks */
 	const char * arg;
-	const int flag;
-	const float val;
+	// const int flag;
+	// const float val;
 
 	/** Parse [i3lock] section **/
-	/*
-	 * We don't really care about flags being something other than
-	 * 1, because everything that is not 0 is considered true
-	 */
 	ini_sget(config, "i3lock", "debug", "%d", &debug_mode);
 	ini_sget(config, "i3lock", "ignore_empty_password", "%d", &ignore_empty_password);
 	ini_sget(config, "i3lock", "skip_empty_password", "%d", &skip_repeated_empty_password);
 	ini_sget(config, "i3lock", "tile", "%d", &tile);
 
 	ini_sget(config, "i3lock", "screen_number", "%d", &screen_number);
+	ini_sget(config, "i3lock", "internal_line_source", "%d", &internal_line_source);
 
+	ini_sget(config, "i3lock", "image_path", NULL, &image_path);
+
+	/** Parse [text] section **/
+	ini_sget(config, "text", "verif_text", NULL, &verif_text);
+	ini_sget(config, "text", "wrong_text", NULL, &wrong_text);
+
+	ini_sget(config, "text", "text_size", "%f", &text_size);
+	ini_sget(config, "text", "modifier_size", "%f", &modifier_size);
+
+	/** Parse [unlock] section **/
 
 	/* Parse [colors] section */
 	/* parse background color */
@@ -135,6 +145,10 @@ int read_config(char * file)
 	/* parse all other colors */
 
 
-	ini_free(config);
 	return 0;
+}
+
+void free_config(void)
+{
+	ini_free(config);
 }

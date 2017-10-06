@@ -48,9 +48,9 @@ extern int unlock_indicator;
 extern int always_show_indicator;
 
 /* Allows user to select whether he wants see caps lock state */
-extern int SHOW_CAPS_LOCK_STATE;
+extern int show_caps_lock_state;
 /* Allows user to select whether he wants see current keyboard layout */
-extern int SHOW_KEYBOARD_LAYOUT;
+extern int show_keyboard_layout;
 
 /* Whether the image should be tiled. */
 extern int tile;
@@ -61,11 +61,13 @@ extern int skip_repeated_empty_password;
 extern int beep;
 extern int debug_mode;
 
-/** Time formatter strings for date/time **/
+/** Time/Date formatter strings **/
 extern char time_format[32];
 extern char date_format[32];
+/** Time/Date/Layout font string **/
 extern char time_font[32];
 extern char date_font[32];
+extern char keyl_font[32];
 /* Unlock indicator position */
 extern char unlock_x_expr[32];
 extern char unlock_y_expr[32];
@@ -86,12 +88,15 @@ extern double indicators_size;
 extern double modifier_size;
 extern double circle_radius;
 
-extern char * image_path;
+extern const char * image_path;
 
-extern char * verif_text;
-extern char * wrong_text;
+extern const char * verif_text;
+extern const char * wrong_text;
 
 /** Configuration file functions prototypes **/
-int read_config(char * file);
+int read_config(char *);
+
+/** Release configuration file (because releasing it invalidates all strings **/
+void free_config(void);
 
 #endif // I3_LOCK_FANCIER_CONFIG_H

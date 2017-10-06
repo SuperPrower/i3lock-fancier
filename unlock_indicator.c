@@ -379,7 +379,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 
 		cairo_set_line_width(ctx, 10.0);
 
-		char *text = NULL;
+		const char *text = NULL;
 
 		/* We don't want to show more than a 3-digit number. */
 		char buf[4];
@@ -448,10 +448,10 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 	int indicators_x_offset = 0;
 	int indicators_y_offset = 60;
 
-	int ind_x = indicators_x_offset;
-	int ind_y = indicators_y_offset;
+	int ind_x = indicators_x_offset + INDICATORS_WIDTH / 2;
+	int ind_y = indicators_y_offset + INDICATORS_HEIGHT / 2;
 
-	if (SHOW_KEYBOARD_LAYOUT || SHOW_CAPS_LOCK_STATE) {
+	if (show_keyboard_layout || show_caps_lock_state) {
 
 		cairo_set_source_rgba(ind_ctx,
 				(double)indicator16[0]/255,
@@ -460,11 +460,12 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 				(double)indicator16[3]/255
 				);
 
-		cairo_select_font_face(ind_ctx, "sans-serif", CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
+		cairo_select_font_face(ind_ctx, keyl_font, CAIRO_FONT_SLANT_NORMAL, CAIRO_FONT_WEIGHT_NORMAL);
 		cairo_set_font_size(ind_ctx, indicators_size);
 
 
 		/* Get Keyboard Layout boundaries */
+		XkbGetState(_display, XkbUseCoreKbd, &xkbState);
 		char *kb_layout = kb_layouts_group[xkbState.group];
 		cairo_text_extents_t kb_layout_extents;
 		cairo_text_extents(ctx, kb_layout, &kb_layout_extents);
@@ -474,13 +475,22 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		cairo_text_extents(ind_ctx, CAPS_LOCK_STRING, &caps_extents);
 
 		// Keyboard layout
-		if (SHOW_KEYBOARD_LAYOUT) {
+		if (show_keyboard_layout) {
 
 
-			double kb_layout_x = ind_x - kb_layout_extents.width / 2;
-			double kb_layout_y = ind_y - kb_layout_extents.height / 2;
+			double kb_layout_x
+				= ind_x
+				- kb_layout_extents.width / 2
+				- kb_layout_extents.x_bearing;
+			double kb_layout_y
+				= ind_y
+				- kb_layout_extents.height / 2
+				- kb_layout_extents.y_bearing;
 
-			XkbGetState(_display, XkbUseCoreKbd, &xkbState);
+			printf("kb_layout_extents.width = %f\n", kb_layout_extents.width);
+			printf("kb_layout_extents.height = %f\n", kb_layout_extents.height);
+			printf("kb_layout_extents.x_bearing = %f\n", kb_layout_extents.x_bearing);
+			printf("kb_layout_extents.y_bearing = %f\n\n", kb_layout_extents.y_bearing);
 
 			cairo_move_to(ind_ctx, kb_layout_x, kb_layout_y);
 			cairo_show_text(ind_ctx, kb_layouts_group[xkbState.group]);
@@ -488,14 +498,17 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		}
 
 		/* Caps Lock state */
-		if (SHOW_CAPS_LOCK_STATE) {
-			double caps_lock_state_x = ind_x
-				- caps_extents.width / 2;
+		if (show_caps_lock_state) {
+			double caps_lock_state_x
+				= ind_x
+				- caps_extents.width / 2
+				- caps_extents.x_bearing;
 
-			double caps_lock_state_y = ind_y
+			double caps_lock_state_y
+				= ind_y
 				- caps_extents.height / 2
-				+ indicators_y_offset
-				+ 2 * caps_extents.height;
+				- caps_extents.y_bearing
+				+ 1.5 * caps_extents.height;
 
 			XGetKeyboardControl(_display, &xKeyboardState);
 			/* if caps lock is switched on */
@@ -821,6 +834,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 	cairo_destroy(date_ctx);
 	cairo_destroy(ind_ctx);
 	cairo_destroy(xcb_ctx);
+	/* XXX: Free them, and positions equations? */
 	return bg_pixmap;
 }
 
