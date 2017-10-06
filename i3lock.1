@@ -1,0 +1,66 @@
+.de Vb \" Begin verbatim text
+.ft CW
+.nf
+.ne \\$1
+..
+.de Ve \" End verbatim text
+.ft R
+.fi
+..
+
+.TH i3lock-fancier 1 "OCTOBER 2017" Linux "User Manuals"
+
+.SH NAME
+i3lock-fancier \- yet another i3lock fork
+
+.SH SYNOPSIS
+.B i3lock
+.RB [\|\-v\|]
+.RB [\|\-n\|]
+.RB [\|\-b\|]
+.RB [\|\-c
+.IR config.ini \|]
+
+.SH DESCRIPTION
+.B i3lock-fancier
+Is simple lockscreen program, with very fancy unlock animation and even greater
+customization capabilities, than original or i3lock-color
+
+.SH I3LOCK FEATURES
+
+.IP \[bu] 2
+i3lock forks, so you can combine it with an alias to suspend to RAM (run "i3lock && echo mem > /sys/power/state" to get a locked screen after waking up your computer from suspend to RAM)
+.IP \[bu]
+You can specify either a background color or a PNG image which will be displayed while your screen is locked.
+.IP \[bu]
+You can specify whether i3lock should bell upon a wrong password.
+.IP \[bu]
+i3lock uses PAM and therefore is compatible with LDAP, etc.
+
+
+.SH OPTIONS
+.TP
+.B \-v, \-\-version
+Display the version of your
+.B i3lock
+
+.TP
+.B \-n, \-\-nofork
+Don't fork after starting.
+
+.TP
+.B \-b, \-\-beep
+Enable beeping. Be sure to not do this when you are about to annoy other people,
+like when opening your laptop in a boring lecture.
+
+.TP
+.BI \-c\  path \fR,\ \fB\-\-config= path
+Load configuration file. By default, it opens $XDG_CONFIG_HOME/i3lock-fancier/config.ini
+
+.SH AUTHOR
+Michael Stapelberg <michael+i3lock at stapelberg dot de>
+
+Jan-Erik Rediger <badboy at archlinux.us>
+
+.SH THIS FORK AUTHOR
+Sergey Koziakov - <s.koziakov at innopolis>

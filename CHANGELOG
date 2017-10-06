@@ -1,0 +1,5 @@
+2017-10-06 i3lock-fancier 0.0.1
+
+	• Replaced longopt with ini config file. Just prototype.
+	• Figured out how to place keyboard indicator on screen, however
+		it's not working like expected yet.

@@ -1,0 +1,97 @@
+#ifndef I3_LOCK_FANCIER_CONFIG_H
+#define I3_LOCK_FANCIER_CONFIG_H
+
+#include <xcb/xcb.h>
+#include <xcb/xkb.h>
+#include <cairo.h>
+
+/** Colors **/
+/* The background color to use (in hex). */
+extern char color[7];
+
+/* indicator color options */
+extern char insidevercolor[9];
+extern char insidewrongcolor[9];
+extern char insidecolor[9];
+extern char ringvercolor[9];
+extern char ringwrongcolor[9];
+extern char ringcolor[9];
+extern char linecolor[9];
+extern char textcolor[9];
+extern char timecolor[9];
+extern char datecolor[9];
+extern char keyhlcolor[9];
+extern char bshlcolor[9];
+extern char separatorcolor[9];
+extern char indicatorscolor[9];
+
+/*
+ * int defining which display the lock indicator should be shown on.
+ * If -1, then show on all displays.
+ */
+extern int screen_number;
+/*
+ * default is to use the supplied line color,
+ * 1 will be ring color,
+ * 2 will be to use the inside color for ver/wrong/etc
+ */
+extern int internal_line_source;
+
+/** Clock options **/
+extern int show_clock;
+
+extern float refresh_rate;
+
+/** Flags **/
+/* Whether the unlock indicator is enabled (defaults to true). */
+extern int unlock_indicator;
+extern int always_show_indicator;
+
+/* Allows user to select whether he wants see caps lock state */
+extern int SHOW_CAPS_LOCK_STATE;
+/* Allows user to select whether he wants see current keyboard layout */
+extern int SHOW_KEYBOARD_LAYOUT;
+
+/* Whether the image should be tiled. */
+extern int tile;
+
+extern int ignore_empty_password;
+extern int skip_repeated_empty_password;
+
+extern int beep;
+extern int debug_mode;
+
+/** Time formatter strings for date/time **/
+extern char time_format[32];
+extern char date_format[32];
+extern char time_font[32];
+extern char date_font[32];
+/* Unlock indicator position */
+extern char unlock_x_expr[32];
+extern char unlock_y_expr[32];
+/* Clock position */
+extern char time_x_expr[32];
+extern char time_y_expr[32];
+/* Date position */
+extern char date_x_expr[32];
+extern char date_y_expr[32];
+/* Keyboard layout position */
+extern char key_x_expr[32];
+extern char key_y_expr[32];
+
+extern double time_size;
+extern double date_size;
+extern double text_size;
+extern double indicators_size;
+extern double modifier_size;
+extern double circle_radius;
+
+extern char * image_path;
+
+extern char * verif_text;
+extern char * wrong_text;
+
+/** Configuration file functions prototypes **/
+int read_config(char * file);
+
+#endif // I3_LOCK_FANCIER_CONFIG_H
