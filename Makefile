@@ -12,7 +12,7 @@ ifeq ($(shell which $(PKG_CONFIG) 2>/dev/null 1>/dev/null || echo 1),1)
 $(error "$(PKG_CONFIG) was not found")
 endif
 
-CFLAGS += -std=c99 -g
+CFLAGS += -std=c99
 CFLAGS += -pipe
 CFLAGS += -Wall
 CFLAGS += -O2
@@ -26,11 +26,7 @@ LIBS += -lev
 LIBS += -lm
 LIBS += -lX11
 LIBS += -lxkbfile
-
-# OpenBSD lacks PAM, use bsd_auth(3) instead.
-ifneq ($(UNAME),OpenBSD)
-  LIBS += -lpam
-endif
+LIBS += -lpam
 
 FILES:=$(wildcard *.c)
 FILES:=$(FILES:.c=.o)
