@@ -60,8 +60,6 @@ extern char *modifier_string;
 extern cairo_surface_t *img;
 extern cairo_surface_t *blur_img;
 
-/* Whether the failed attempts should be displayed. */
-extern bool show_failed_attempts;
 /* Number of failed unlock attempts. */
 extern int failed_attempts;
 

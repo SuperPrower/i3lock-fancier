@@ -56,8 +56,8 @@ int show_keyboard_layout 	= 1;
 
 int tile 			= 0;
 
-int ignore_empty_password 		= 1;
-int skip_repeated_empty_password 	= 1;
+int ignore_empty_password 	= 1;
+int show_failed_attempts	= 0;
 
 int beep 			= 0;
 int debug_mode 			= 0;
@@ -113,7 +113,6 @@ int read_config(char * file)
 	/** Parse [i3lock] section **/
 	ini_sget(config, "i3lock", "debug", "%d", &debug_mode);
 	ini_sget(config, "i3lock", "ignore_empty_password", "%d", &ignore_empty_password);
-	ini_sget(config, "i3lock", "skip_empty_password", "%d", &skip_repeated_empty_password);
 	ini_sget(config, "i3lock", "tile", "%d", &tile);
 
 	ini_sget(config, "i3lock", "screen_number", "%d", &screen_number);
@@ -129,6 +128,13 @@ int read_config(char * file)
 	ini_sget(config, "text", "modifier_size", "%f", &modifier_size);
 
 	/** Parse [unlock] section **/
+	ini_sget(config, "unlock", "show_indicator", "%d", &unlock_indicator);
+	ini_sget(config, "unlock", "always_show_indicator", "%d", &always_show_indicator);
+
+	ini_sget(config, "unlock", "unlock_x_expr", "%f", &unlock_x_expr);
+	ini_sget(config, "unlock", "unlock_y_expr", "%f", &unlock_y_expr);
+
+	ini_sget(config, "unlock", "circle_radius", "%f", &circle_radius);
 
 	/* Parse [colors] section */
 	/* parse background color */
