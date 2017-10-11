@@ -84,13 +84,13 @@ extern unlock_state_t unlock_state;
 extern auth_state_t auth_state;
 
 int failed_attempts = 0;
-int show_failed_attempts = 0;
 int retry_verification = 0;
 
 uint32_t last_resolution[2];
 xcb_window_t win;
 static xcb_cursor_t cursor;
 static pam_handle_t *pam_handle;
+int skip_repeated_empty_password = false;
 int input_position = 0;
 
 cairo_surface_t *img;

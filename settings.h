@@ -46,6 +46,8 @@ extern float refresh_rate;
 /* Whether the unlock indicator is enabled (defaults to true). */
 extern int unlock_indicator;
 extern int always_show_indicator;
+/* Show number of failed attempts, if any */
+extern int show_failed_attempts;
 
 /* Allows user to select whether he wants see caps lock state */
 extern int show_caps_lock_state;
@@ -56,7 +58,6 @@ extern int show_keyboard_layout;
 extern int tile;
 
 extern int ignore_empty_password;
-extern int skip_repeated_empty_password;
 
 extern int beep;
 extern int debug_mode;
