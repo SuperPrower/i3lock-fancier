@@ -869,7 +869,7 @@ void build_kb_layout_groups(void){
 int main(int argc, char *argv[]) {
 	struct passwd *pw;
 	char *username;
-	char *config_path = "$XDG_CONFIG_HOME/i3lock-fancier/config.ini";
+	char *config_path = "$HOME/.config/i3lock-fancier/config.ini";
 	int ret;
 	struct pam_conv conv = {conv_callback, NULL};
 	int curs_choice = CURS_NONE;
@@ -922,7 +922,6 @@ int main(int argc, char *argv[]) {
 
 	/** Parse configuration file **/
 	read_config(config_path);
-	free(config_path);
 
 	/* We need (relatively) random numbers for highlighting a random part of
 	 * the unlock indicator upon keypresses. */
