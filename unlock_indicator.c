@@ -457,7 +457,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		XkbGetState(_display, XkbUseCoreKbd, &xkbState);
 		char *kb_layout = kb_layouts_group[xkbState.group];
 		cairo_text_extents_t kb_layout_extents;
-		cairo_text_extents(ctx, kb_layout, &kb_layout_extents);
+		cairo_text_extents(ind_ctx, kb_layout, &kb_layout_extents);
 
 		/* Get Caps Lock indicator boundaries */
 		cairo_text_extents_t caps_extents;
