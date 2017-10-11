@@ -112,6 +112,7 @@ int read_config(char * file)
 
 	/** Parse [i3lock] section **/
 	ini_sget(config, "i3lock", "debug", "%d", &debug_mode);
+	ini_sget(config, "i3lock", "show_failed_attempts", "%d", &show_failed_attempts);
 	ini_sget(config, "i3lock", "ignore_empty_password", "%d", &ignore_empty_password);
 	ini_sget(config, "i3lock", "tile", "%d", &tile);
 
