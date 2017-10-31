@@ -84,10 +84,10 @@ double indicators_size 		= 28.0;
 double modifier_size 		= 14.0;
 double circle_radius 		= 90.0;
 
-char * image_path		= NULL;
+char image_path[256]		= {0};
 
-char * verif_text		= "Verifying...";
-char * wrong_text		= "Wrong Password!";
+char verif_text[64]		= "Verifying...\0";
+char wrong_text[64] 		= "Wrong Password!\0";
 
 static ini_t * config;
 
@@ -107,8 +107,6 @@ int read_config(char * file)
 	/** parse config file **/
 	/* temporary variables for checks */
 	const char * arg;
-	// const int flag;
-	// const float val;
 
 	/** Parse [i3lock] section **/
 	ini_sget(config, "i3lock", "debug", "%d", &debug_mode);
@@ -119,11 +117,16 @@ int read_config(char * file)
 	ini_sget(config, "i3lock", "screen_number", "%d", &screen_number);
 	ini_sget(config, "i3lock", "internal_line_source", "%d", &internal_line_source);
 
-	ini_sget(config, "i3lock", "image_path", NULL, &image_path);
+
+	if ((arg = ini_get(config, "i3lock", "image_path")) != NULL)
+		strcpy(image_path, arg);
 
 	/** Parse [text] section **/
-	ini_sget(config, "text", "verif_text", NULL, &verif_text);
-	ini_sget(config, "text", "wrong_text", NULL, &wrong_text);
+	if ((arg = ini_get(config, "text", "verif_text")) != NULL)
+		strcpy(verif_text, arg);
+
+	if ((arg = ini_get(config, "text", "wrong_text")) != NULL)
+		strcpy(wrong_text, arg);
 
 	ini_sget(config, "text", "text_size", "%f", &text_size);
 	ini_sget(config, "text", "modifier_size", "%f", &modifier_size);
@@ -132,8 +135,11 @@ int read_config(char * file)
 	ini_sget(config, "unlock", "show_indicator", "%d", &unlock_indicator);
 	ini_sget(config, "unlock", "always_show_indicator", "%d", &always_show_indicator);
 
-	ini_sget(config, "unlock", "unlock_x_expr", "%f", &unlock_x_expr);
-	ini_sget(config, "unlock", "unlock_y_expr", "%f", &unlock_y_expr);
+	if ((arg = ini_get(config, "unlock", "unlock_x_expr")) != NULL)
+		strcpy(unlock_x_expr, arg);
+
+	if ((arg = ini_get(config, "unlock", "unlock_y_expr")) != NULL)
+		strcpy(unlock_y_expr, arg);
 
 	ini_sget(config, "unlock", "circle_radius", "%f", &circle_radius);
 
@@ -142,20 +148,177 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "colors", "color")) != NULL) {
 		if (arg[0] == '#') arg++; /* Skip # if present */
 
-		if (strlen(arg) != 6
-		|| sscanf(arg, "%06[0-9a-fA-F]", color) != 1) {
+		if (strlen(arg) != 6 || sscanf(arg, "%06[0-9a-fA-F]", color) != 1) {
 			errx(EXIT_FAILURE, "color is invalid, "
 			"it must be given in 3-byte hexadecimal format: rrggbb\n");
 		}
 	}
 
-	/* parse all other colors */
+	/* parse all other 4-byte colors */
+	arg = ini_get(config, "colors", "insidevercolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", insidevercolor) != 1) {
+			errx(EXIT_FAILURE, "insidevercolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "insidewrongcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", insidewrongcolor) != 1) {
+			errx(EXIT_FAILURE, "insidewrongcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "insidecolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", insidecolor) != 1) {
+			errx(EXIT_FAILURE, "insidecolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
 
+	arg = ini_get(config, "colors", "ringvercolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", ringvercolor) != 1) {
+			errx(EXIT_FAILURE, "ringvercolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "ringwrongcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", ringwrongcolor) != 1) {
+			errx(EXIT_FAILURE, "ringwrongcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "ringcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", ringcolor) != 1) {
+			errx(EXIT_FAILURE, "ringcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "linecolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", linecolor) != 1) {
+			errx(EXIT_FAILURE, "linecolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "textcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", textcolor) != 1) {
+			errx(EXIT_FAILURE, "textcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "timecolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", timecolor) != 1) {
+			errx(EXIT_FAILURE, "timecolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "datecolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", datecolor) != 1) {
+			errx(EXIT_FAILURE, "datecolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+
+	arg = ini_get(config, "colors", "keyhlcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", keyhlcolor) != 1) {
+			errx(EXIT_FAILURE, "keyhlcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "bshlcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", bshlcolor) != 1) {
+			errx(EXIT_FAILURE, "bshlcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "separatorcolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", separatorcolor) != 1) {
+			errx(EXIT_FAILURE, "separatorcolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+	arg = ini_get(config, "colors", "indicatorscolor");
+	if (arg) {
+		if (arg[0] == '#') arg++;
+		if (strlen(arg) != 8 || sscanf(arg, "%08[0-9a-fA-F]", indicatorscolor) != 1) {
+			errx(EXIT_FAILURE, "indicatorscolor is invalid, "
+			"it must be given in 4-byte hexadecimal format: rrggbbaa\n");
+		}
+	}
+
+	/* parse [clock] section */
+	ini_sget(config, "clock", "show_clock", "%d", &show_clock);
+	ini_sget(config, "clock", "refresh_rate", "%f", &refresh_rate);
+
+	if ((arg = ini_get(config, "clock", "format")) != NULL)
+		strcpy(time_format, arg);
+
+	if ((arg = ini_get(config, "clock", "font")) != NULL)
+		strcpy(time_font, arg);
+
+	if ((arg = ini_get(config, "clock", "x_expr")) != NULL)
+		strcpy(time_x_expr, arg);
+
+	if ((arg = ini_get(config, "clock", "y_expr")) != NULL)
+		strcpy(time_y_expr, arg);
+
+	ini_sget(config, "clock", "font_size", "%f", &time_size);
+
+	/* parse [date] section */
+	if ((arg = ini_get(config, "date", "format")) != NULL)
+		strcpy(date_format, arg);
+
+	if ((arg = ini_get(config, "date", "font")) != NULL)
+		strcpy(date_font, arg);
+
+	ini_sget(config, "date", "font_size", "%f", &date_size);
+
+	if ((arg = ini_get(config, "date", "x_expr")) != NULL)
+		strcpy(date_x_expr, arg);
+
+	if ((arg = ini_get(config, "date", "y_expr")) != NULL)
+		strcpy(date_y_expr, arg);
+
+	/* parse [keyboard] section */
+	ini_sget(config, "keyboard", "show_key_layout", "%d", &show_keyboard_layout);
+	ini_sget(config, "keyboard", "show_caps_state", "%d", &show_caps_lock_state);
+
+	if ((arg = ini_get(config, "keyboard", "font")) != NULL)
+		strcpy(keyl_font, arg);
+
+	ini_sget(config, "keyboard", "font_size", "%f", &indicators_size);
+
+	if ((arg = ini_get(config, "keyboard", "x_expr")) != NULL)
+		strcpy(key_x_expr, arg);
+
+	if ((arg = ini_get(config, "keyboard", "y_expr")) != NULL)
+		strcpy(key_y_expr, arg);
+
+	ini_free(config);
 
 	return 0;
-}
-
-void free_config(void)
-{
-	ini_free(config);
 }

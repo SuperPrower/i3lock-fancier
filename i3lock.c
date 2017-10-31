@@ -1095,7 +1095,4 @@ int main(int argc, char *argv[]) {
 		start_time_redraw_tick(main_loop);
 	}
 	ev_loop(main_loop, 0);
-
-	// Release .ini file
-	free_config();
 }

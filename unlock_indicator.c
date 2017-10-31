@@ -474,13 +474,6 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 				- kb_layout_extents.height / 2
 				- kb_layout_extents.y_bearing;
 
-			/*
-			printf("xkbState.group = %u\n", xkbState.group);
-			printf("kb_layout_extents.width = %f\n", kb_layout_extents.width);
-			printf("kb_layout_extents.height = %f\n", kb_layout_extents.height);
-			printf("kb_layout_extents.x_bearing = %f\n", kb_layout_extents.x_bearing);
-			printf("kb_layout_extents.y_bearing = %f\n\n", kb_layout_extents.y_bearing);
-			*/
 			cairo_move_to(ind_ctx, kb_layout_x, kb_layout_y);
 			cairo_show_text(ind_ctx, kb_layouts_group[xkbState.group]);
 			cairo_close_path(ind_ctx);
