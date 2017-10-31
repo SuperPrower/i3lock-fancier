@@ -89,10 +89,10 @@ extern double indicators_size;
 extern double modifier_size;
 extern double circle_radius;
 
-extern const char * image_path;
+extern const char image_path[256];
 
-extern const char * verif_text;
-extern const char * wrong_text;
+extern const char verif_text[64];
+extern const char wrong_text[64];
 
 /** Configuration file functions prototypes **/
 int read_config(char *);
