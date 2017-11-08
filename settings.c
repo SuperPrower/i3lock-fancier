@@ -144,8 +144,8 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "text", "wrong_text")) != NULL)
 		strcpy(wrong_text, arg);
 
-	ini_sget(config, "text", "text_size", "%f", &text_size);
-	ini_sget(config, "text", "modifier_size", "%f", &modifier_size);
+	ini_sget(config, "text", "text_size", "%lf", &text_size);
+	ini_sget(config, "text", "modifier_size", "%lf", &modifier_size);
 
 	/** Parse [unlock] section **/
 	ini_sget(config, "unlock", "show_indicator", "%d", &unlock_indicator);
@@ -157,7 +157,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "unlock", "unlock_y_expr")) != NULL)
 		strcpy(unlock_y_expr, arg);
 
-	ini_sget(config, "unlock", "circle_radius", "%f", &circle_radius);
+	ini_sget(config, "unlock", "circle_radius", "%lf", &circle_radius);
 
 	/* Parse [colors] section */
 	/* parse background color */
@@ -288,7 +288,7 @@ int read_config(char * file)
 
 	/* parse [clock] section */
 	ini_sget(config, "clock", "show_clock", "%d", &show_clock);
-	ini_sget(config, "clock", "refresh_rate", "%f", &refresh_rate);
+	ini_sget(config, "clock", "refresh_rate", "%lf", &refresh_rate);
 
 	if ((arg = ini_get(config, "clock", "format")) != NULL)
 		strcpy(time_format, arg);
@@ -302,7 +302,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "clock", "y_expr")) != NULL)
 		strcpy(time_y_expr, arg);
 
-	ini_sget(config, "clock", "font_size", "%f", &time_size);
+	ini_sget(config, "clock", "font_size", "%lf", &time_size);
 
 	/* parse [date] section */
 	if ((arg = ini_get(config, "date", "format")) != NULL)
@@ -311,7 +311,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "date", "font")) != NULL)
 		strcpy(date_font, arg);
 
-	ini_sget(config, "date", "font_size", "%f", &date_size);
+	ini_sget(config, "date", "font_size", "%lf", &date_size);
 
 	if ((arg = ini_get(config, "date", "x_expr")) != NULL)
 		strcpy(date_x_expr, arg);
@@ -326,7 +326,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "keyboard", "font")) != NULL)
 		strcpy(keyl_font, arg);
 
-	ini_sget(config, "keyboard", "font_size", "%f", &indicators_size);
+	ini_sget(config, "keyboard", "font_size", "%lf", &indicators_size);
 
 	if ((arg = ini_get(config, "keyboard", "x_expr")) != NULL)
 		strcpy(key_x_expr, arg);
