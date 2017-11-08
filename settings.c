@@ -9,6 +9,8 @@
 #include <string.h>
 #include <err.h>
 
+#include <wordexp.h>
+
 /*
  * This file stores all setings and options,
  * as well as functions to read them from
@@ -75,7 +77,7 @@ char time_y_expr[32] 		= "iy - (ch / 2)\0";
 char date_x_expr[32] 		= "tx\0";
 char date_y_expr[32] 		= "ty+30\0";
 char key_x_expr[32]		= "x + (w / 2)\0";
-char key_y_expr[32]		= "y + 60 + (h / 2)\0";
+char key_y_expr[32]		= "y + (h / 2)\0";
 
 double time_size 		= 32.0;
 double date_size 		= 14.0;
@@ -94,12 +96,21 @@ static ini_t * config;
 /** Configuration file functions prototypes **/
 int read_config(char * file)
 {
+
 	if (!file || file[0] == '\0') {
 		errx(EXIT_FAILURE, "Invalid configuration file path\n");
 	}
 
+	/** Word expansion variables **/
+	wordexp_t p;
+	char **w;
+
+	/** Word expansion of configuration path **/
+	wordexp(file, &p, 0);
+	w = p.we_wordv;
+
 	/** open config file **/
-	config = ini_load(file);
+	config = ini_load(w[0]);
 	if (!config) {
 		errx(EXIT_FAILURE, "Unable to load configuration file\n");
 	}
@@ -118,8 +129,13 @@ int read_config(char * file)
 	ini_sget(config, "i3lock", "internal_line_source", "%d", &internal_line_source);
 
 
-	if ((arg = ini_get(config, "i3lock", "image_path")) != NULL)
-		strcpy(image_path, arg);
+	if ((arg = ini_get(config, "i3lock", "image_path")) != NULL) {
+		/** image path word expansion **/
+		wordexp(arg, &p, 0);
+		w = p.we_wordv;
+
+		strcpy(image_path, w[0]);
+	}
 
 	/** Parse [text] section **/
 	if ((arg = ini_get(config, "text", "verif_text")) != NULL)
@@ -128,8 +144,8 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "text", "wrong_text")) != NULL)
 		strcpy(wrong_text, arg);
 
-	ini_sget(config, "text", "text_size", "%f", &text_size);
-	ini_sget(config, "text", "modifier_size", "%f", &modifier_size);
+	ini_sget(config, "text", "text_size", "%lf", &text_size);
+	ini_sget(config, "text", "modifier_size", "%lf", &modifier_size);
 
 	/** Parse [unlock] section **/
 	ini_sget(config, "unlock", "show_indicator", "%d", &unlock_indicator);
@@ -141,7 +157,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "unlock", "unlock_y_expr")) != NULL)
 		strcpy(unlock_y_expr, arg);
 
-	ini_sget(config, "unlock", "circle_radius", "%f", &circle_radius);
+	ini_sget(config, "unlock", "circle_radius", "%lf", &circle_radius);
 
 	/* Parse [colors] section */
 	/* parse background color */
@@ -272,7 +288,7 @@ int read_config(char * file)
 
 	/* parse [clock] section */
 	ini_sget(config, "clock", "show_clock", "%d", &show_clock);
-	ini_sget(config, "clock", "refresh_rate", "%f", &refresh_rate);
+	ini_sget(config, "clock", "refresh_rate", "%lf", &refresh_rate);
 
 	if ((arg = ini_get(config, "clock", "format")) != NULL)
 		strcpy(time_format, arg);
@@ -286,7 +302,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "clock", "y_expr")) != NULL)
 		strcpy(time_y_expr, arg);
 
-	ini_sget(config, "clock", "font_size", "%f", &time_size);
+	ini_sget(config, "clock", "font_size", "%lf", &time_size);
 
 	/* parse [date] section */
 	if ((arg = ini_get(config, "date", "format")) != NULL)
@@ -295,7 +311,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "date", "font")) != NULL)
 		strcpy(date_font, arg);
 
-	ini_sget(config, "date", "font_size", "%f", &date_size);
+	ini_sget(config, "date", "font_size", "%lf", &date_size);
 
 	if ((arg = ini_get(config, "date", "x_expr")) != NULL)
 		strcpy(date_x_expr, arg);
@@ -310,7 +326,7 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "keyboard", "font")) != NULL)
 		strcpy(keyl_font, arg);
 
-	ini_sget(config, "keyboard", "font_size", "%f", &indicators_size);
+	ini_sget(config, "keyboard", "font_size", "%lf", &indicators_size);
 
 	if ((arg = ini_get(config, "keyboard", "x_expr")) != NULL)
 		strcpy(key_x_expr, arg);
@@ -318,7 +334,9 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "keyboard", "y_expr")) != NULL)
 		strcpy(key_y_expr, arg);
 
+	/** Free config and wordexp **/
 	ini_free(config);
+	wordfree(&p);
 
 	return 0;
 }

@@ -775,12 +775,12 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 
 				cairo_set_source_surface(xcb_ctx,
 						indicators_output,
-						unx - 150,
-						uny - 150
+						indx - 150,
+						indy - 150
 				);
 				cairo_rectangle(xcb_ctx,
-						unx - 150,
-						uny - 150,
+						indx - 150,
+						indy - 150,
 						indicators_width_physical,
 						indicators_height_physical
 				);
