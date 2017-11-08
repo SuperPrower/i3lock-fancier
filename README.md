@@ -18,6 +18,8 @@ Features:
 Just copy test_config.ini to $HOME/.config/i3lock-fancier/config.ini and
 configure it as you like using provided commentaries.
 
+![Cool Screenshot](https://raw.githubusercontent.com/SuperPrower/i3lock-fancier/configuration/screenshot.png)
+
 Dependencies:
 * Arch: install `cairo, libev, libx11, pam, xcb-util-image, xcb-util-keysyms, libxkbcommon-x11`
 * Debian-based: do `sudo apt install pkg-config libxcb1 libpam-dev libcairo2-dev libxcb-composite0 libxcb-composite0-dev libxcb-xinerama0-dev libev-dev libx11-dev libx11-xcb-dev libxkbcommon0 libxkbcommon-x11-0 libxcb-dpms0-dev libxcb-image0-dev libxcb-util0-dev libxcb-xkb-dev libxkbfile-dev libxkbcommon-x11-dev libxkbcommon-dev`
