@@ -893,6 +893,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		cairo_fill(xcb_ctx);
 	}
 
+	/* XXX: Free them */
 	cairo_surface_destroy(xcb_output);
 	cairo_surface_destroy(time_output);
 	cairo_surface_destroy(date_output);
@@ -903,7 +904,16 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 	cairo_destroy(date_ctx);
 	cairo_destroy(ind_ctx);
 	cairo_destroy(xcb_ctx);
-	/* XXX: Free them, and positions equations? */
+
+	te_free(te_unlock_x_expr);
+	te_free(te_unlock_y_expr);
+	te_free(te_time_x_expr);
+	te_free(te_time_y_expr);
+	te_free(te_date_x_expr);
+	te_free(te_date_y_expr);
+	te_free(te_key_x_expr);
+	te_free(te_key_y_expr);
+
 	return bg_pixmap;
 }
 
