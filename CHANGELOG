@@ -1,3 +1,10 @@
+2017-11-08 i3lock-fancier 0.1.1
+	• Do I really have to keep track of changes in this file?
+	• Anyway, since last time, we have (supposedly) added support for
+		ini file configuration, 
+	• fixed troubles with keyboard layout indicator,
+	• and even refactored some code and fixed memory leaks.
+
 2017-10-06 i3lock-fancier 0.0.1
 
 	• Replaced longopt with ini config file. Just prototype.
