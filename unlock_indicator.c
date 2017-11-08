@@ -284,7 +284,6 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 	/* https://github.com/ravinrabbid/i3lock-clock/commit/0de3a411fa5249c3a4822612c2d6c476389a1297 */
 	time_t rawtime;
 	struct tm* timeinfo;
-	bool unlock_indic_text = false;
 	time(&rawtime);
 	timeinfo = localtime(&rawtime);
 
@@ -405,7 +404,6 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		}
 
 		if (text) {
-			unlock_indic_text = true;
 			cairo_text_extents_t extents;
 			double x, y;
 
@@ -549,7 +547,7 @@ xcb_pixmap_t draw_image(uint32_t *resolution) {
 		cairo_stroke(ctx);
 	}
 
-	if (show_clock && !unlock_indic_text) {
+	if (show_clock) {
 		char *text = NULL;
 		char *date = NULL;
 		char time_text[40] = {0};

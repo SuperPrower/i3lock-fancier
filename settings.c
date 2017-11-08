@@ -109,6 +109,8 @@ int read_config(char * file)
 	wordexp(file, &p, 0);
 	w = p.we_wordv;
 
+	printf("DEBUG: loading configuration from %s\n", w[0]);
+
 	/** open config file **/
 	config = ini_load(w[0]);
 	if (!config) {
