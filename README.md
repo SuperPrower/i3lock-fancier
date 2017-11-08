@@ -2,7 +2,7 @@ i3lock-fancier - yet another i3lock fork
 ========================================
 
 This fork combines features of [i3lock-color](https://github.com/chrjguill/i3lock-color)
-and [this i3lock fork] (https://github.com/cac03/i3lock/commits/master) to
+and [this i3lock fork](https://github.com/cac03/i3lock/commits/master) to
 create my ultimate lockscreen experience.
 
 Drawbacks:
