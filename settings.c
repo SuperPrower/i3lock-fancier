@@ -76,8 +76,8 @@ char time_x_expr[32] 		= "ix - (cw / 2)\0";
 char time_y_expr[32] 		= "iy - (ch / 2)\0";
 char date_x_expr[32] 		= "tx\0";
 char date_y_expr[32] 		= "ty+30\0";
-char key_x_expr[32]		= "x - 500 + (w / 2)\0";
-char key_y_expr[32]		= "y - 500 + (h / 2)\0";
+char key_x_expr[32]		= "x + (w / 2)\0";
+char key_y_expr[32]		= "y + (h / 2)\0";
 
 double time_size 		= 32.0;
 double date_size 		= 14.0;
