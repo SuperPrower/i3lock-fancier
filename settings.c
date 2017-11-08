@@ -9,6 +9,8 @@
 #include <string.h>
 #include <err.h>
 
+#include <wordexp.h>
+
 /*
  * This file stores all setings and options,
  * as well as functions to read them from
@@ -94,12 +96,21 @@ static ini_t * config;
 /** Configuration file functions prototypes **/
 int read_config(char * file)
 {
+
 	if (!file || file[0] == '\0') {
 		errx(EXIT_FAILURE, "Invalid configuration file path\n");
 	}
 
+	/** Word expansion variables **/
+	wordexp_t p;
+	char **w;
+
+	/** Word expansion of configuration path **/
+	wordexp(file, &p, 0);
+	w = p.we_wordv;
+
 	/** open config file **/
-	config = ini_load(file);
+	config = ini_load(w[0]);
 	if (!config) {
 		errx(EXIT_FAILURE, "Unable to load configuration file\n");
 	}
@@ -118,8 +129,13 @@ int read_config(char * file)
 	ini_sget(config, "i3lock", "internal_line_source", "%d", &internal_line_source);
 
 
-	if ((arg = ini_get(config, "i3lock", "image_path")) != NULL)
-		strcpy(image_path, arg);
+	if ((arg = ini_get(config, "i3lock", "image_path")) != NULL) {
+		/** image path word expansion **/
+		wordexp(arg, &p, 0);
+		w = p.we_wordv;
+
+		strcpy(image_path, w[0]);
+	}
 
 	/** Parse [text] section **/
 	if ((arg = ini_get(config, "text", "verif_text")) != NULL)
@@ -318,7 +334,9 @@ int read_config(char * file)
 	if ((arg = ini_get(config, "keyboard", "y_expr")) != NULL)
 		strcpy(key_y_expr, arg);
 
+	/** Free config and wordexp **/
 	ini_free(config);
+	wordfree(&p);
 
 	return 0;
 }
