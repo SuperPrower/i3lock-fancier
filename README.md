@@ -1,7 +1,9 @@
 i3lock-fancier - yet another i3lock fork
 ========================================
 
-This fork combines features of [i3lock-color](https://github.com/chrjguill/i3lock-color) and [this i3lock fork](https://github.com/cac03/i3lock/commits/master) to create my ultimate lockscreen experience.
+This fork combines features of [i3lock-color](https://github.com/chrjguill/i3lock-color)
+and [this i3lock fork] (https://github.com/cac03/i3lock/commits/master) to
+create my ultimate lockscreen experience.
 
 Drawbacks:
 * I don't know how to work with OpenBSD, so I removed all BSD-related stubs
@@ -12,7 +14,9 @@ Features:
 * Loading configurations from .ini config files with [this library](https://github.com/rxi/ini)
 * Keyboard indicator and Caps Lock layout
 * Separated configuration variables
-* Code separation in future
+
+Just copy test_config.ini to $HOME/.config/i3lock-fancier/config.ini and
+configure it as you like using provided commentaries.
 
 Dependencies:
 * Arch: install `cairo, libev, libx11, pam, xcb-util-image, xcb-util-keysyms, libxkbcommon-x11`
