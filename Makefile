@@ -13,6 +13,7 @@ $(error "$(PKG_CONFIG) was not found")
 endif
 
 CFLAGS += -std=c99
+CFLAGS += -I.
 CFLAGS += -pipe
 CFLAGS += -Wall
 CFLAGS += -O2

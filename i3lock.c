@@ -44,6 +44,7 @@
 #include "i3lock.h"
 #include "xcb.h"
 #include "cursors.h"
+#include "render.h"
 #include "unlock_indicator.h"
 #include "xinerama.h"
 

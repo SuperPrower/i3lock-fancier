@@ -5,6 +5,7 @@
 #include <xcb/xkb.h>
 #include <cairo.h>
 
+
 /** Colors **/
 /* The background color to use (in hex). */
 extern char color[7];

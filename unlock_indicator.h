@@ -1,7 +1,7 @@
 #ifndef _UNLOCK_INDICATOR_H
 #define _UNLOCK_INDICATOR_H
 
-#include <ev.h>
+#include <cairo.h>
 
 typedef enum {
     STATE_STARTED = 0,         /* default state */
@@ -20,9 +20,7 @@ typedef enum {
     STATE_I3LOCK_LOCK_FAILED = 4 /* i3lock failed to load */
 } auth_state_t;
 
-xcb_pixmap_t draw_image(uint32_t* resolution);
-void redraw_screen(void);
-void clear_indicator(void);
-void start_time_redraw_timeout(void);
-void start_time_redraw_tick(struct ev_loop*);
+/* Unlock indicator */
+void draw_unlock_indicator(cairo_t *, auth_state_t);
+
 #endif

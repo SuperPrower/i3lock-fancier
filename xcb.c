@@ -22,6 +22,7 @@
 #include <time.h>
 
 #include "cursors.h"
+#include "render.h"
 #include "unlock_indicator.h"
 
 extern auth_state_t auth_state;
