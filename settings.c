@@ -47,7 +47,7 @@ int internal_line_source 	= 0;
 
 /** Clock options **/
 int show_clock 			= 0;
-double refresh_rate 		= 1.0;
+float refresh_rate 		= 1.0;
 
 /** Flags **/
 int unlock_indicator 		= 1;
@@ -290,7 +290,7 @@ int read_config(char * file)
 
 	/* parse [clock] section */
 	ini_sget(config, "clock", "show_clock", "%d", &show_clock);
-	ini_sget(config, "clock", "refresh_rate", "%lf", &refresh_rate);
+	ini_sget(config, "clock", "refresh_rate", "%f", &refresh_rate);
 
 	if ((arg = ini_get(config, "clock", "format")) != NULL)
 		strcpy(time_format, arg);
